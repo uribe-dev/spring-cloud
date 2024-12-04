@@ -1,8 +1,8 @@
+# Este microservicio no se va a registrar en Eureka a si mismo
+
 server:
   port: 8761
 eureka:
   client:
     fetch-registry: false
     register-with-eureka: false
-
-# Este microservicio no se va a registrar en Eureka
