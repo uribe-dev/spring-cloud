@@ -1,8 +1,13 @@
 # Este microservicio no se va a registrar en Eureka a si mismo
 
+# Parte 1. Definimos la configuracion inicial de Eureka
+
 server:
   port: 8761
 eureka:
   client:
     fetch-registry: false
     register-with-eureka: false
+    # Parte 2. Para multiples instancias de los microservicios
+    service-url: 
+      default-zone: http://${eureka.instance.hostname}:${server.port}/eureka/ # Puerto 8761

@@ -1,7 +1,8 @@
 # Parte 1. Definimos el puerto de este microservicio
 
 server:
-  port: 8002
+  #port: 8002
+  port: ${PORT:${SERVER_PORT:0}}  # Ahora el puerto sera dinamico y asignado por el entorno
 
 # Parte 2. Configuracion de Eureka
 
@@ -11,5 +12,7 @@ eureka:
     register-with-eureka: true  # Este servicio se va a registrar en Eureka
     service-url:
       default-zone: http://localhost:8761/eureka  # Servidor Eureka
-    instance:
-      hostname: localhost   # Ip del servicio
+  instance:
+    #hostname: localhost   # Ip del servicio
+    # Para tener varias instancias de los microservicios:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
