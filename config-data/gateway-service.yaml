@@ -1,0 +1,36 @@
+# Parte 1. Definimos el puerto de este microservicio
+
+server:
+  port: 8080
+
+# Parte 2. Configuracion de Eureka
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true  # Este servicio se va a registrar en Eureka
+    service-url:
+      default-zone: http://localhost:8761/eureka  # Servidor Eureka
+  instance:
+    hostname: localhost   # Ip del servicio
+
+# Parte 3. Configuracion de Spring Cloud Gateway
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: user-service
+          uri: lb://user-service  # lb = load balancer
+          predicates:
+            - Path=/user/**
+        - id: car-service
+          uri: lb://car-service
+          predicates:
+            - Path=/car/**
+        - id: bike-service
+          uri: lb://bike-service
+          predicates:
+            - Path=/bike/**
