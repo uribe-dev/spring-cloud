@@ -16,4 +16,4 @@ eureka:
     #hostname: localhost   # Ip del servicio
     # Para tener varias instancias de los microservicios:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-    prefer-ip-address: true
+    prefer-ip-address: true # La agregue pues marcaba error con el dns
