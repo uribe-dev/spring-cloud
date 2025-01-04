@@ -15,6 +15,7 @@ eureka:
     hostname: localhost   # Ip del servicio
 
 # Parte 3. Configuracion de Spring Cloud Gateway
+# lb = load balancer
 spring:
   cloud:
     gateway:
@@ -23,7 +24,7 @@ spring:
           enabled: true
       routes:
         - id: user-service
-          uri: lb://user-service  # lb = load balancer
+          uri: lb://user-service
           predicates:
             - Path=/user/**
         - id: car-service
