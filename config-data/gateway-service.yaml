@@ -16,9 +16,45 @@ eureka:
 
 # Parte 3. Configuracion de Spring Cloud Gateway
 # lb = load balancer
+#spring:
+#  cloud:
+#    gateway:
+#      discovery:
+#        locator:
+#          enabled: true
+#      routes:
+#        - id: user-service
+#          uri: lb://user-service
+#          predicates:
+#            - Path=/user/**          
+#        - id: car-service
+#          uri: lb://car-service
+#          predicates:
+#            - Path=/car/**
+#        - id: bike-service
+#          uri: lb://bike-service
+#          predicates:
+#            - Path=/bike/**
+
+# Parte 4. Configuracion de Keycloak
+
+# default-filters: - TokenRelay   -> Para Keycloak
+# Es el patron que implementaremos. Gateway enviara tokens a los recursos protegidos (user-service)
+
+# La parte de security es tambien para keycloak
+# Los datos se obtienen de keycloak, del json en "OpenID Endpoint Configuration"
+# client-secret se obtiene de la pestaña "Credentials" en el cliente que se creo en keycloak
+# redirect-uri tambien se saca del cliente que se creo en keycloak (Valid redirect URIs)
+
+# Nota: en produccion no seria correcto tener estas claves en un repo publico, puede ser privado
+# Tal vez deban ir en el bootstrap.yaml propio del gateway-service
+# O en un servidor para almacenar esas claves. Eso no se trata en el video.
+
 spring:
   cloud:
     gateway:
+      default-filters:
+        - TokenRelay
       discovery:
         locator:
           enabled: true
@@ -27,6 +63,8 @@ spring:
           uri: lb://user-service
           predicates:
             - Path=/user/**
+          filters:
+            - RemoveRequestHeader=Cookie
         - id: car-service
           uri: lb://car-service
           predicates:
@@ -35,3 +73,19 @@ spring:
           uri: lb://bike-service
           predicates:
             - Path=/bike/**
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            authorization-uri: http://localhost:8180/realms/kenobi-realm/protocol/openid-connect/auth
+            userinfo-uri: http://localhost:8180/realms/kenobi-realm/protocol/openid-connect/userinfo
+            user-name-attribute: preferred_username
+            token-uri: http://localhost:8180/realms/kenobi-realm/protocol/openid-connect/token
+        registration:
+          kenobi-client:
+            provider: keycloak
+            client-id: kenobi-client
+            client-secret: YPr1zOYE4zFkIP50WJPicUCoFzCOdEMw
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/kenobi-client"
