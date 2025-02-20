@@ -82,6 +82,8 @@ spring:
             userinfo-uri: http://localhost:8180/realms/kenobi-realm/protocol/openid-connect/userinfo
             user-name-attribute: preferred_username
             token-uri: http://localhost:8180/realms/kenobi-realm/protocol/openid-connect/token
+            issuer-uri: http://localhost:8180/realms/kenobi-realm
+            jwk-set-uri: http://localhost:8180/realms/kenobi-realm/protocol/openid-connect/certs
         registration:
           kenobi-client:
             provider: keycloak
