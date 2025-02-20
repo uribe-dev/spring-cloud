@@ -87,5 +87,6 @@ spring:
             provider: keycloak
             client-id: kenobi-client
             client-secret: YPr1zOYE4zFkIP50WJPicUCoFzCOdEMw
+            scope: openid
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/kenobi-client"
