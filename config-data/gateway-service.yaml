@@ -50,6 +50,8 @@ eureka:
 # Tal vez deban ir en el bootstrap.yaml propio del gateway-service
 # O en un servidor para almacenar esas claves. Eso no se trata en el video.
 
+# Adicional agregue issuer-uri y jwk-set-uri, pues me marcaba un error de credenciales
+
 spring:
   cloud:
     gateway:
