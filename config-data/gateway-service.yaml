@@ -14,9 +14,11 @@ eureka:
   instance:
     hostname: localhost   # Ip del servicio
 
+
 # Parte 3. Configuracion de Spring Cloud Gateway
 # lb = load balancer
-#spring:
+
+# spring:
 #  cloud:
 #    gateway:
 #      discovery:
@@ -36,6 +38,7 @@ eureka:
 #          predicates:
 #            - Path=/bike/**
 
+
 # Parte 4. Configuracion de Keycloak
 
 # default-filters: - TokenRelay   -> Para Keycloak
@@ -52,45 +55,74 @@ eureka:
 
 # Adicional agregue issuer-uri y jwk-set-uri, pues me marcaba un error de credenciales
 
+
+# **** Para la ultima parte (JWT) comentamos Keycloak ******* 
+
+# spring:
+#   cloud:
+#     gateway:
+#       default-filters:
+#         - TokenRelay
+#       discovery:
+#         locator:
+#           enabled: true
+#       routes:
+#         - id: user-service
+#           uri: lb://user-service
+#           predicates:
+#             - Path=/user/**
+#           filters:
+#             - RemoveRequestHeader=Cookie
+#         - id: car-service
+#           uri: lb://car-service
+#           predicates:
+#             - Path=/car/**
+#         - id: bike-service
+#           uri: lb://bike-service
+#           predicates:
+#             - Path=/bike/**
+#   security:
+#     oauth2:
+#       client:
+#         provider:
+#           keycloak:
+#             authorization-uri: http://localhost:8180/realms/kenobi-realm/protocol/openid-connect/auth
+#             userinfo-uri: http://localhost:8180/realms/kenobi-realm/protocol/openid-connect/userinfo
+#             user-name-attribute: preferred_username
+#             token-uri: http://localhost:8180/realms/kenobi-realm/protocol/openid-connect/token
+#             issuer-uri: http://localhost:8180/realms/kenobi-realm
+#             jwk-set-uri: http://localhost:8180/realms/kenobi-realm/protocol/openid-connect/certs
+#         registration:
+#           kenobi-client:
+#             provider: keycloak
+#             client-id: kenobi-client
+#             client-secret: YPr1zOYE4zFkIP50WJPicUCoFzCOdEMw
+#             scope: openid
+#             authorization-grant-type: authorization_code
+#             redirect-uri: "{baseUrl}/login/oauth2/code/kenobi-client"
+
+# Parte 5. Configuracion de Spring Cloud Gateway, incluyendo auth-service
+# lb = load balancer
 spring:
-  cloud:
-    gateway:
-      default-filters:
-        - TokenRelay
-      discovery:
-        locator:
-          enabled: true
-      routes:
-        - id: user-service
-          uri: lb://user-service
-          predicates:
-            - Path=/user/**
-          filters:
-            - RemoveRequestHeader=Cookie
-        - id: car-service
-          uri: lb://car-service
-          predicates:
-            - Path=/car/**
-        - id: bike-service
-          uri: lb://bike-service
-          predicates:
-            - Path=/bike/**
-  security:
-    oauth2:
-      client:
-        provider:
-          keycloak:
-            authorization-uri: http://localhost:8180/realms/kenobi-realm/protocol/openid-connect/auth
-            userinfo-uri: http://localhost:8180/realms/kenobi-realm/protocol/openid-connect/userinfo
-            user-name-attribute: preferred_username
-            token-uri: http://localhost:8180/realms/kenobi-realm/protocol/openid-connect/token
-            issuer-uri: http://localhost:8180/realms/kenobi-realm
-            jwk-set-uri: http://localhost:8180/realms/kenobi-realm/protocol/openid-connect/certs
-        registration:
-          kenobi-client:
-            provider: keycloak
-            client-id: kenobi-client
-            client-secret: YPr1zOYE4zFkIP50WJPicUCoFzCOdEMw
-            scope: openid
-            authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/kenobi-client"
+ cloud:
+   gateway:
+     discovery:
+       locator:
+         enabled: true
+     routes:
+       - id: user-service
+         uri: lb://user-service
+         predicates:
+           - Path=/user/**          
+       - id: car-service
+         uri: lb://car-service
+         predicates:
+           - Path=/car/**
+       - id: bike-service
+         uri: lb://bike-service
+         predicates:
+           - Path=/bike/**
+       - id: auth-service
+         uri: lb://auth-service
+         predicates:
+           - Path=/auth/**
