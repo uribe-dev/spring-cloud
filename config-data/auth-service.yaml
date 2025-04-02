@@ -16,3 +16,15 @@ eureka:
     # Para tener varias instancias de los microservicios:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
     prefer-ip-address: true # La agregue pues marcaba error con el dns
+
+# Parte 3. Rutas que son para un administrador
+# Con la expresion regular buscamos que sea un numero de 1 o 2 digitos
+
+admin-paths:
+  paths:
+    - uri: "/user"
+      method: "POST"
+    - uri: "/user/savecar/{1}[1-9]+[0-9]*"
+      method: "POST"
+    - uri: "/user/savebike/{1}[1-9]+[0-9]*"
+      method: "POST"
