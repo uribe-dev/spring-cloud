@@ -55,3 +55,22 @@ resilience4j.circuitbreaker:
 spring:
   application:
     zipkin: http://localhost:9411
+
+# Parte 5. Demostracion de Vault
+
+# Configurar la BD con MariaDB
+# No se ocupo, pues yo segui con H2
+# Es para demostrar el uso de Vault
+
+# spring:
+#   jpa:
+#     properties:
+#       hibernate:
+#         dialect: org.hibernate.dialect.MariaDB10Dialect
+#     show-sql: 'true'
+#     hibernate:
+#       ddl-auto: update
+#   datasource:
+#     url: jdbc:mariadb://localhost:3306/microuser?createDatabaseIfNotExist=true
+#     username: user        # No ira aqui, pues se obtendrian con Vault  
+#     password: password    # No ira aqui, pues se obtendrian con Vault   
